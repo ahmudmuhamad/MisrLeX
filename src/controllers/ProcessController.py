@@ -5,9 +5,6 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from models import ProcessingEnum
-import logging
-
-logger = logging.getLogger(__name__)
 
 class ProcessController(BaseController):
 
@@ -21,24 +18,20 @@ class ProcessController(BaseController):
         return os.path.splitext(file_id)[-1]
 
     def get_file_loader(self, file_id: str):
-        try:
-            file_ext = self.get_file_extension(file_id=file_id)
-            file_path = os.path.join(self.project_path, file_id)
 
-            if not os.path.exists(file_path):
-                logger.error(f"File not found: {file_path}")
-                return None
+        file_ext = self.get_file_extension(file_id=file_id)
+        file_path = os.path.join(
+            self.project_path,
+            file_id
+        )
 
-            if file_ext == ProcessingEnum.TXT.value:
-                return TextLoader(file_path, encoding="utf-8")
-            elif file_ext == ProcessingEnum.PDF.value:
-                return PyMuPDFLoader(file_path)
-            else:
-                logger.error(f"Unsupported file type: {file_ext}")
-                return None
-        except Exception as e:
-            logger.error(f"Error creating file loader: {e}")
-            return None
+        if file_ext == ProcessingEnum.TXT.value:
+            return TextLoader(file_path, encoding="utf-8")
+
+        if file_ext == ProcessingEnum.PDF.value:
+            return PyMuPDFLoader(file_path)
+        
+        return None
 
     def get_file_content(self, file_id: str):
 
