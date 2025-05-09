@@ -153,7 +153,8 @@ async def process_endpoint(request: Request, project_id: str, process_request: P
     
     process_controller = ProcessController(project_id=project_id)
 
-    no_records = 0
+    
+    cords = 0
     no_files = 0
 
     chunk_model = await ChunkModel.create_instance(
@@ -209,3 +210,4 @@ async def process_endpoint(request: Request, project_id: str, process_request: P
             "processed_files": no_files
         }
     )
+    
