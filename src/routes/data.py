@@ -7,15 +7,11 @@ import aiofiles
 from models import ResponseSignal
 import logging
 from .schemas.data import ProcessRequest
-
-
 from models.ProjectModel import ProjectModel
 from models.ChunkModel import ChunkModel
 from models.AssetModel import AssetModel
-from models.db_schemas import DataChunk
-from models.db_schemas import Asset
+from models.db_schemas import DataChunk, Asset
 from models.enums.AssetTypeEnum import AssetTypeEnum
-
 
 logger = logging.getLogger('uvicorn.error')
 
@@ -153,8 +149,7 @@ async def process_endpoint(request: Request, project_id: str, process_request: P
     
     process_controller = ProcessController(project_id=project_id)
 
-    
-    cords = 0
+    no_records = 0
     no_files = 0
 
     chunk_model = await ChunkModel.create_instance(
@@ -210,4 +205,3 @@ async def process_endpoint(request: Request, project_id: str, process_request: P
             "processed_files": no_files
         }
     )
-    
