@@ -1,7 +1,6 @@
-```markdown:e:\MisrLeX\README.md
 # MisrLeX
 
-MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application designed to make Egyptian legal texts more accessible and understandable. By integrating advanced language models with a custom document retrieval system, MisrLeX delivers accurate, context-aware answers to legal queries grounded in Egyptian legislation and jurisprudence.
+MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application designed to make Egyptian legal texts more accessible and understandable. By integrating advanced language models with a custom document retrieval system, MisrLeX delivers accurate, context-aware answers to legal queries grounded in Egyptian law.
 
 ---
 
@@ -13,7 +12,6 @@ MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application desig
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
 
 ---
 
@@ -50,7 +48,7 @@ MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application desig
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/MisrLeX.git
+git clone https://github.com/ahmudmuhamad/MisrLeX.git
 cd MisrLeX
 ```
 
@@ -99,13 +97,7 @@ The API will be available at `http://localhost:8000`.
 
 ## Usage
 
-- Use the API endpoints to upload legal documents, index them, and ask legal questions.
-- Example endpoints:
-  - `POST /data/upload/{project_id}`: Upload documents
-  - `POST /index/{project_id}`: Index documents for semantic search
-  - `POST /index/answer/{project_id}`: Ask a legal question and get an answer
-
-See the FastAPI docs at `http://localhost:8000/docs` for interactive API documentation.
+- Use the API endpoints to upload, process legal documents, index them, and ask legal questions.
 
 ---
 
@@ -142,20 +134,6 @@ MisrLeX/
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please open issues or submit pull requests for new features, bug fixes, or documentation improvements.
-
----
-
-## Acknowledgements
-
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Qdrant](https://qdrant.tech/)
-- [MongoDB](https://www.mongodb.com/)
-- [LangChain](https://python.langchain.com/)
-- [OpenAI](https://openai.com/)
-- [Cohere](https://cohere.com/)
 
 ---
 
