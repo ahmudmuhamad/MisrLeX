@@ -19,10 +19,24 @@ services:
     networks:
       - app-network
 
+  qdrant:
+    container_name: qdrant
+    image: qdrant/qdrant:latest
+    restart: always
+    ports:
+      - "6333:6333"  # REST API
+      - "6334:6334"  # GRPC API
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
   mongodata:
+    driver: local
+  qdrant_data:
     driver: local
