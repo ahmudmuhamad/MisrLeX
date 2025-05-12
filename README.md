@@ -1,6 +1,6 @@
 # MisrLeX
 
-MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application designed to make Egyptian legal texts more accessible and understandable. By integrating advanced language models with a custom document retrieval system, MisrLeX delivers accurate, context-aware answers to legal queries grounded in Egyptian law.
+MisrLeX is Retrieval-Augmented Generation (RAG) application designed to make Egyptian legal texts more accessible and understandable. By integrating advanced language models with a custom document retrieval system, MisrLeX delivers accurate, context-aware answers to legal queries grounded in Egyptian law.
 
 ---
 
