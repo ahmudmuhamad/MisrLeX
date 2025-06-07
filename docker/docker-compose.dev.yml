@@ -5,17 +5,12 @@ services:
     restart: always
     ports:
       - "27017:27017"
-    
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      
     volumes:
-      -  mongodata:/data/db
+      - mongodata:/data/db
       - ./mongodb/config:/data/configdb
-    
-    # Authentication environment variables removed
-
     networks:
       - app-network
 
@@ -31,12 +26,30 @@ services:
     networks:
       - app-network
 
+  pgvector:
+    image: pgvector/pgvector:0.8.0-pg17
+    container_name: pgvector
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - backend
+      - app-network  # Add this if it needs to communicate with other services
+    restart: always
+
 networks:
   app-network:
+    driver: bridge
+  backend:
     driver: bridge
 
 volumes:
   mongodata:
     driver: local
   qdrant_data:
+    driver: local
+  pgvector_data:
     driver: local
