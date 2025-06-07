@@ -37,8 +37,25 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - backend
-      - app-network  # Add this if it needs to communicate with other services
+      - app-network
     restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - backend
+      - app-network
+    depends_on:
+      - pgvector
 
 networks:
   app-network:
@@ -52,4 +69,6 @@ volumes:
   qdrant_data:
     driver: local
   pgvector_data:
+    driver: local
+  pgadmin_data:
     driver: local
