@@ -75,4 +75,4 @@ docker-compose -f docker/docker-compose.dev.yml up -d
 1. Download from [tableplus.com](https://tableplus.com)
 2. New → PostgreSQL
 3. Enter connection details matching DBeaver setup
-        
+    

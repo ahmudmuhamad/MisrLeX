@@ -10,3 +10,11 @@ motor==3.7.0
 openai==1.77.0
 cohere==5.15.0
 qdrant-client==1.14.0
+torch==2.7.0
+sentence-transformers>=3.1.0
+torchvision==0.22.0
+SQLAlchemy==2.0.40
+asyncpg==0.30.0
+alembic==1.16.1
+psycopg2==2.9.10
+huggingface_hub==0.31.1

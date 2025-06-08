@@ -1,4 +1,4 @@
-from schemas.misrlex_base import SQLAlchemyBase
+from .misrlex_base import SQLAlchemyBase
 from sqlalchemy import Column, Integer, DateTime, func, String, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship

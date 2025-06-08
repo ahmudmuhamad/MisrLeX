@@ -1,3 +1,1 @@
-from .project import Project
-from .data_chunk import DataChunk, RetrievedDocument
-from .asset import Asset
+from models.db_schemas.misrlex.schemas import Asset, DataChunk, Project, RetrievedDocument, SQLAlchemyBase
