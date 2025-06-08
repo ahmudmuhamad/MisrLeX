@@ -1,7 +1,7 @@
 from time import timezone
 from .misrlex_base import SQLAlchemyBase
-from sqlalchemy import Column, func, Integer, DateTime, String, ForiegnKey, Index 
-from sqlalchemy.dialectes.postgresql import JSONB
+from sqlalchemy import Column, func, Integer, DateTime, String, ForeignKey, Index 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
 
@@ -23,6 +23,6 @@ class Asset(SQLAlchemyBase):
     project = relationship("Project", back_populates = "assets")
 
     __table_args__ = (
-        Index("asset_project_id_index_1", "asset_project_id"),
+        Index("asset_project_id_index", "asset_project_id"),
         Index("asset_type_index", "asset_type"),
     )
