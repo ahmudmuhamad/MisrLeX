@@ -3,7 +3,6 @@ from enum import Enum
 class LLMEnums(Enum):
     OPENAI = "OPENAI"
     COHERE = "COHERE"
-    JINAAI = "JINAAI" # Added JINAAI
     HUGGINGFACE = "HUGGINGFACE" # Added HUGGINGFACE
 
 class OpenAIEnums(Enum):
@@ -19,10 +18,7 @@ class CoHereEnums(Enum):
     DOCUMENT = "search_document"
     QUERY = "search_query"
 
-# Added JinaAIEnums
-class JinaAIEnums(Enum):
-    DOCUMENT = "search_document"
-    QUERY = "search_query"
+
 
 # Added HuggingFaceEnums
 class HuggingFaceEnums(Enum):

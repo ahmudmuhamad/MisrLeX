@@ -68,7 +68,16 @@ class JinaAIProvider(LLMInterface):
         processed_text = self.process_text(text)
         try:
             embedding = self.client.encode(processed_text)
-            return embedding.tolist() # Ensure it's a list
+            embedding = self.client.encode(processed_text)
+
+            if isinstance(embedding, list):
+                embedding = np.array(embedding)
+
+            if embedding.ndim != 1:
+                raise ValueError(f"Expected 1D embedding, got shape: {embedding.shape}")
+
+            return embedding.tolist()
+ # Ensure it's a list
         except Exception as e:
             self.logger.error(f"Error while embedding text with JinaAI: {e}")
             return None
