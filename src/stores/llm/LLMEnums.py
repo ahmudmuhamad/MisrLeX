@@ -4,6 +4,7 @@ class LLMEnums(Enum):
     OPENAI = "OPENAI"
     COHERE = "COHERE"
     HUGGINGFACE = "HUGGINGFACE" # Added HUGGINGFACE
+    JINAAI = "JINAAI"  
 
 class OpenAIEnums(Enum):
     SYSTEM = "system"
@@ -22,6 +23,14 @@ class CoHereEnums(Enum):
 
 # Added HuggingFaceEnums
 class HuggingFaceEnums(Enum):
+    SYSTEM = "system"
+    USER = "user"
+    ASSISTANT = "assistant"
+    
+    DOCUMENT = "search_document"
+    QUERY = "search_query"
+
+class JinaAIEnums(Enum):
     SYSTEM = "system"
     USER = "user"
     ASSISTANT = "assistant"

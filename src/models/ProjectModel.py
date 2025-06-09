@@ -32,9 +32,9 @@ class ProjectModel(BaseDataModel):
                 project = result.scalar_one_or_none()
                 if project is None:
                     project_rec = Project(
-                        project_id = project_id
+                        project_id = project_id,
+                        name = f"Project {project_id}"  # Add a default name
                     )
-
                     project = await self.create_project(project=project_rec)
                     return project
                 else:
