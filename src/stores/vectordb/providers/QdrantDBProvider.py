@@ -7,7 +7,7 @@ from models.db_schemas import RetrievedDocument
 
 class QdrantDBProvider(VectorDBInterface):
 
-    def __init__(self, db_client: str, default_vector_size: int = 786,
+    def __init__(self, db_client: str, default_vector_size: int = 512,
                                      distance_method: str = None, index_threshold: int=100):
 
         self.client = None
