@@ -47,9 +47,14 @@ class JinaAIProvider(LLMInterface):
             self.logger.error(f"Failed to load JinaAI embedding model {self.embedding_model_id}: {e}")
             self.client = None
 
-    def process_text(self, text: str):
-        # Jina v3 can handle long contexts, but good to have a truncation safeguard
-        return text[:self.default_input_max_characters].strip()
+    def process_text(self, text: Union[str, List[str]]) -> Union[str, List[str]]:
+        if isinstance(text, str):
+            return text[:self.default_input_max_characters].strip()
+        elif isinstance(text, list):
+            return [t[:self.default_input_max_characters].strip() for t in text]
+        else:
+            raise TypeError("Input to process_text must be a string or list of strings")
+
 
     def generate_text(self, prompt: str, chat_history: list=[], max_output_tokens: int=None,
                             temperature: float = None):
@@ -57,7 +62,7 @@ class JinaAIProvider(LLMInterface):
         self.logger.warning("JinaAIProvider is an embedding provider, generate_text is not applicable.")
         return None
 
-    def embed_text(self, text: Union[str, List[str]], document_type: str = None): # document_type is not used by sentence-transformers for jina v3
+    def embed_text(self, text: Union[str, List[str]], document_type: str = None):
         if not self.client:
             self.logger.error("JinaAI embedding model was not set or failed to load")
             return None
@@ -65,22 +70,26 @@ class JinaAIProvider(LLMInterface):
         if not self.embedding_model_id:
             self.logger.error("Embedding model for JinaAI was not set")
             return None
-        
+
         processed_text = self.process_text(text)
         try:
             embedding = self.client.encode(processed_text)
 
-            if isinstance(embedding, list):
-                embedding = np.array(embedding)
+            # If it's a single string, we expect a 1D array
+            if isinstance(text, str):
+                if isinstance(embedding, list):
+                    embedding = np.array(embedding)
+                if embedding.ndim != 1:
+                    raise ValueError(f"Expected 1D embedding, got shape: {embedding.shape}")
+                return embedding.tolist()
+            else:
+                # If input was a list, embedding should be 2D
+                return [np.array(e).tolist() for e in embedding]
 
-            if embedding.ndim != 1:
-                raise ValueError(f"Expected 1D embedding, got shape: {embedding.shape}")
-
-            return embedding.tolist()
- # Ensure it's a list
         except Exception as e:
             self.logger.error(f"Error while embedding text with JinaAI: {e}")
             return None
+
 
     def construct_prompt(self, prompt: str, role: str):
         # Not applicable for an embedding-only provider using sentence-transformers
