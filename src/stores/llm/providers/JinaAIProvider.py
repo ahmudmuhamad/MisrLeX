@@ -2,7 +2,8 @@ from ..LLMInterface import LLMInterface
 from ..LLMEnums import JinaAIEnums, DocumentTypeEnum
 from sentence_transformers import SentenceTransformer
 import logging
-
+from typing import List, Union
+import numpy as np
 class JinaAIProvider(LLMInterface):
 
     def __init__(self, api_key: str = None, # API key might not be needed for local model
@@ -56,7 +57,7 @@ class JinaAIProvider(LLMInterface):
         self.logger.warning("JinaAIProvider is an embedding provider, generate_text is not applicable.")
         return None
 
-    def embed_text(self, text: str, document_type: str = None): # document_type is not used by sentence-transformers for jina v3
+    def embed_text(self, text: Union[str, List[str]], document_type: str = None): # document_type is not used by sentence-transformers for jina v3
         if not self.client:
             self.logger.error("JinaAI embedding model was not set or failed to load")
             return None
@@ -67,7 +68,6 @@ class JinaAIProvider(LLMInterface):
         
         processed_text = self.process_text(text)
         try:
-            embedding = self.client.encode(processed_text)
             embedding = self.client.encode(processed_text)
 
             if isinstance(embedding, list):

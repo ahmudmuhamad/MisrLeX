@@ -2,6 +2,7 @@ from ..LLMInterface import LLMInterface
 from ..LLMEnums import HuggingFaceEnums, DocumentTypeEnum
 from huggingface_hub import InferenceClient
 import logging
+from typing import List, Union
 
 class HuggingFaceProvider(LLMInterface):
 
@@ -76,7 +77,7 @@ class HuggingFaceProvider(LLMInterface):
             self.logger.error(f"Error while generating text with HuggingFace: {e}")
             return None
 
-    def embed_text(self, text: str, document_type: str = None):
+    def embed_text(self, text: Union(str, List[str]), document_type: str = None):
         
         if not self.client:
             self.logger.error("HuggingFace client was not set")
