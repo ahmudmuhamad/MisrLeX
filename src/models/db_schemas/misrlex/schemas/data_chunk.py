@@ -8,9 +8,10 @@ from pydantic import BaseModel
 
 class DataChunk(SQLAlchemyBase):
 
-    __tablename__ = "data_chunks"
+    __tablename__ = "chunks"
 
     chunk_id = Column(Integer, primary_key=True, autoincrement=True)
+
 
     chunk_text = Column(String, nullable=False)
     chunk_metadata = Column(JSONB, nullable=True)
