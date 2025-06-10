@@ -19,3 +19,4 @@ alembic==1.16.1
 psycopg2==2.9.10
 huggingface_hub==0.31.1
 nltk==3.9.1
+tqdm==4.67.1
