@@ -1,4 +1,3 @@
-```markdown:e:\MisrLeX\README.md
 # MisrLeX
 
 MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application designed to make Egyptian legal texts more accessible and understandable. By integrating advanced language models with a custom document retrieval system, MisrLeX delivers accurate, context-aware answers to legal queries grounded in Egyptian legislation and jurisprudence.
@@ -10,7 +9,6 @@ MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application desig
 - [Features](#features)
 - [Architecture](#architecture)
 - [Installation](#installation)
-- [Configuration](#configuration)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -31,9 +29,9 @@ MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application desig
 ## Architecture
 
 - **Backend:** Python (FastAPI)
-- **Vector Database:** Qdrant (for semantic search)
-- **Document Database:** MongoDB (for metadata and project management)
-- **LLM Providers:** OpenAI, Cohere (pluggable)
+- **Vector Database:** Qdrant, PGVector (for semantic search)
+- **Document Database:** postgres (sqlalchemy)
+- **LLM Providers:** OpenAI, Cohere, HuggingFace, JinaAi (pluggable)
 - **Document Loaders:** Supports TXT and PDF formats
 - **Prompt Templates:** Customizable, with localization support
 
@@ -44,7 +42,7 @@ MisrLeX is an open-source Retrieval-Augmented Generation (RAG) application desig
 ### Prerequisites
 
 - Python 3.10+
-- Docker & Docker Compose (for running MongoDB and Qdrant)
+- Docker & Docker Compose (for running MongoDB, Qdrant, PGVector, pgadmin4)
 - (Optional) Virtual environment tool (e.g., `venv` or `conda`)
 
 ### 1. Clone the Repository
@@ -134,30 +132,12 @@ MisrLeX/
 
 ---
 
-## Configuration
-
-- **MongoDB**: Used for storing project and document metadata.
-- **Qdrant**: Used for vector-based semantic search.
-- **LLM Providers**: Configure your API keys for OpenAI or Cohere in the `.env` files.
-
----
-
 ## Contributing
 
 Contributions are welcome! Please open issues or submit pull requests for new features, bug fixes, or documentation improvements.
 
 ---
 
-## Acknowledgements
-
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Qdrant](https://qdrant.tech/)
-- [MongoDB](https://www.mongodb.com/)
-- [LangChain](https://python.langchain.com/)
-- [OpenAI](https://openai.com/)
-- [Cohere](https://cohere.com/)
-
----
 
 
 
