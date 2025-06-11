@@ -74,8 +74,15 @@ class NLPController(BaseController):
         if not vectors or len(vectors) == 0:
             return False
         
-        if isinstance(vectors, list) and len(vectors) > 0:
+        # If vectors is a list of floats (single vector), use it directly
+        if isinstance(vectors, list) and all(isinstance(v, float) for v in vectors):
+            query_vector = vectors
+        # If vectors is a list of vectors (e.g., multiple embeddings), use the first
+        elif isinstance(vectors, list) and isinstance(vectors[0], list):
             query_vector = vectors[0]
+        else:
+            return False
+
 
         if not query_vector:
             return False    

@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List, Optional
+from typing import List
 class Settings(BaseSettings):
 
     APP_NAME: str
@@ -23,9 +23,7 @@ class Settings(BaseSettings):
     OPENAI_API_URL: str = None
     COHERE_API_KEY: str = None
     JINAAI_API_KEY: str = None
-    HUGGINGFACE_API_KEY: str = None
 
-    #GENERATION_MODEL_LITERAL: List[str] = None
     GENERATION_MODEL_ID: str = None
     EMBEDDING_MODEL_ID: str = None
     EMBEDDING_MODEL_SIZE: int = None
@@ -33,8 +31,6 @@ class Settings(BaseSettings):
     GENERATION_DAFAULT_MAX_TOKENS: int = None
     GENERATION_DAFAULT_TEMPERATURE: float = None
 
-
-    #VECTOR_DB_LITERAL: List[str] = None
     VECTOR_DB_BACKEND : str
     VECTOR_DB_PATH : str
     VECTOR_DB_DISTANCE_METHOD: str = None

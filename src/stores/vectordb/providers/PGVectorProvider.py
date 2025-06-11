@@ -6,11 +6,10 @@ from typing import List
 from models.db_schemas import RetrievedDocument
 from sqlalchemy.sql import text as sql_text
 import json
-from collections.abc import Iterable
 
 class PGVectorProvider(VectorDBInterface):
 
-    def __init__(self, db_client, default_vector_size: int = 1024,
+    def __init__(self, db_client, default_vector_size: int = 786,
                        distance_method: str = None, index_threshold: int=100):
         
         self.db_client = db_client
@@ -32,21 +31,11 @@ class PGVectorProvider(VectorDBInterface):
 
     async def connect(self):
         async with self.db_client() as session:
-            try:
-                # Check if vector extension already exists
-                result = await session.execute(sql_text(
-                    "SELECT 1 FROM pg_extension WHERE extname = 'vector'"
+            async with session.begin():
+                await session.execute(sql_text(
+                    "CREATE EXTENSION IF NOT EXISTS vector"
                 ))
-                extension_exists = result.scalar_one_or_none()
-                
-                if not extension_exists:
-                    # Only create if it doesn't exist
-                    await session.execute(sql_text("CREATE EXTENSION vector"))
-                    await session.commit()
-            except Exception as e:
-                # If extension already exists or any other error, just log and continue
-                self.logger.warning(f"Vector extension setup: {str(e)}")
-                await session.rollback()
+                await session.commit()
 
     async def disconnect(self):
         pass
@@ -279,36 +268,22 @@ class PGVectorProvider(VectorDBInterface):
         return True
     
     async def search_by_vector(self, collection_name: str, vector: list, limit: int):
-    # Validate input vector
-        if not isinstance(vector, Iterable) or isinstance(vector, (str, bytes)):
-            self.logger.error(f"Invalid vector format. Expected a list of floats, got {type(vector).__name__}")
-            return False
 
-        # Check if collection exists
         is_collection_existed = await self.is_collection_existed(collection_name=collection_name)
         if not is_collection_existed:
-            self.logger.error(f"Cannot search for records in a non-existent collection: {collection_name}")
+            self.logger.error(f"Can not search for records in a non-existed collection: {collection_name}")
             return False
-
-        # Format the vector as a string for SQL
-        formatted_vector = "[" + ",".join(str(float(v)) for v in vector) + "]"
-
+        
+        vector = "[" + ",".join([ str(v) for v in vector ]) + "]"
         async with self.db_client() as session:
             async with session.begin():
-                search_sql = sql_text(
-                    f'''
-                    SELECT {PgVectorTableSchemeEnums.TEXT.value} AS text,
-                        1 - ({PgVectorTableSchemeEnums.VECTOR.value} <=> :vector) AS score
-                    FROM {collection_name}
-                    ORDER BY score DESC
-                    LIMIT :limit
-                    '''
-                )
-
-                result = await session.execute(search_sql, {
-                    "vector": formatted_vector,
-                    "limit": limit
-                })
+                search_sql = sql_text(f'SELECT {PgVectorTableSchemeEnums.TEXT.value} as text, 1 - ({PgVectorTableSchemeEnums.VECTOR.value} <=> :vector) as score'
+                                      f' FROM {collection_name}'
+                                      ' ORDER BY score DESC '
+                                      f'LIMIT {limit}'
+                                      )
+                
+                result = await session.execute(search_sql, {"vector": vector})
 
                 records = result.fetchall()
 

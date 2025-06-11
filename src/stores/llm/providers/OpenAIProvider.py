@@ -41,9 +41,9 @@ class OpenAIProvider(LLMInterface):
     def process_text(self, text: str):
         return text[:self.default_input_max_characters].strip()
 
-    def generate_text(self, prompt: str, chat_history: list=[], max_output_tokens: int=None,
-                            temperature: float = None):
-        
+    def generate_text(self, prompt: str, chat_history: list = [], max_output_tokens: int = None,
+                  temperature: float = None):
+
         if not self.client:
             self.logger.error("OpenAI client was not set")
             return None
@@ -51,26 +51,56 @@ class OpenAIProvider(LLMInterface):
         if not self.generation_model_id:
             self.logger.error("Generation model for OpenAI was not set")
             return None
-        
+
         max_output_tokens = max_output_tokens if max_output_tokens else self.default_generation_max_output_tokens
-        temperature = temperature if temperature else self.default_generation_temperature
+        temperature = temperature if temperature is not None else self.default_generation_temperature
 
-        chat_history.append(
-            self.construct_prompt(prompt=prompt, role=OpenAIEnums.USER.value)
-        )
+        # Construct full chat history with system prompt
+        full_chat_history = [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that answers legal questions based strictly on the provided legal documents."
+            },
+            {
+                "role": "user",
+                "content": prompt.strip()
+            }
+        ]
 
-        response = self.client.chat.completions.create(
-            model = self.generation_model_id,
-            messages = chat_history,
-            max_tokens = max_output_tokens,
-            temperature = temperature
-        )
+        # Include prior chat history if needed (optional)
+        full_chat_history.extend(chat_history)
 
-        if not response or not response.choices or len(response.choices) == 0 or not response.choices[0].message:
-            self.logger.error("Error while generating text with OpenAI")
+        # Log what we're about to send
+        self.logger.info(f"Sending chat completion request with model: {self.generation_model_id}")
+        self.logger.debug(f"Chat history:\n{full_chat_history}")
+        self.logger.debug(f"Max tokens: {max_output_tokens}, Temperature: {temperature}")
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.generation_model_id,
+                messages=full_chat_history,
+                max_tokens=max_output_tokens,
+                temperature=temperature
+            )
+
+            # Log full response for debugging
+            self.logger.debug(f"OpenAI response: {response}")
+
+            if not response or not response.choices:
+                self.logger.error("No choices returned in OpenAI response.")
+                return None
+
+            message = response.choices[0].message
+            if not message or not message.content:
+                self.logger.error("Message content in OpenAI response is empty.")
+                return None
+
+            return message.content.strip()
+
+        except Exception as e:
+            self.logger.exception("Exception during OpenAI chat completion")
             return None
 
-        return response.choices[0].message.content
 
 
     def embed_text(self, text: Union[str, List[str]], document_type: str = None):
@@ -102,7 +132,4 @@ class OpenAIProvider(LLMInterface):
             "role": role,
             "content": prompt,
         }
-    
-
-
     
