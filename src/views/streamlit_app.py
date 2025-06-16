@@ -11,6 +11,9 @@ st.title("📚 MisrLeX: Egyptian Legal RAG")
 
 # --- Sidebar: Project Config & API Health ---
 st.sidebar.header("🔧 Project Configuration")
+language = st.sidebar.selectbox("Language", options=[("English", "en"), ("العربية", "ar")], format_func=lambda x: x[0])
+selected_language = language[1]
+st.session_state["language"] = selected_language
 project_id_input = st.sidebar.text_input("Project ID", value="1")
 
 # Validate project ID
@@ -127,10 +130,9 @@ if user_question:
         st.markdown(user_question)
 
     try:
-        payload = {"text": user_question, "limit": 3}
-        with st.spinner("Searching..."):
-            response = requests.post(f"{API_BASE_URL}/nlp/index/answer/{project_id}", json=payload)
-            response_data = response.json()
+        payload = {"text": user_question, "limit": 3, "language": st.session_state["language"]}
+        response = requests.post(f"{API_BASE_URL}/nlp/index/answer/{project_id}", json=payload)
+        response_data = response.json()
 
         if response.status_code == 200 and response_data.get("signal") == "rag_success":
             answer = response_data.get("answer", "No answer found.")
@@ -139,11 +141,9 @@ if user_question:
                 st.markdown(answer)
         else:
             error_message = response_data.get("detail") or response_data.get("signal") or "Unknown error."
-            fallback = f"⚠️ Could not retrieve an answer. Error: {error_message}"
-            st.session_state.chat_history.append({"role": "assistant", "content": fallback})
+            st.session_state.chat_history.append({"role": "assistant", "content": error_message})
             with st.chat_message("assistant"):
-                st.markdown(fallback)
-            st.error("RAG API response issue:")
+                st.markdown(error_message)
             st.json(response_data)
 
     except requests.exceptions.RequestException as e:
