@@ -24,7 +24,7 @@ ENV UV_HTTP_CACHE_DIR=/tmp/uv-cache
 COPY src/requirements.txt .
 
 # Install torch separately due to its size and complexity
-#RUN uv pip install torch==2.7.0 --system --no-cache-dir
+RUN uv pip install torch==2.7.0 --system --no-cache-dir
 
 # Install remaining dependencies
 RUN uv pip install -r requirements.txt --system --no-cache-dir
