@@ -1,0 +1,38 @@
+APP_NAME = "MisrLeX"
+APP_VERSION = "0.1"
+
+FILE_EXTENSION_TYPE=["application/pdf", "text/plain", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword"]
+MAX_FILE_SIZE = 10
+
+
+# MONGODB
+POSTGRES_USERNAME="postgres"
+POSTGRES_PASSWORD="PASSWORD"
+POSTGRES_HOST="localhost"
+POSTGRES_PORT=5432
+POSTGRES_MAIN_DATABASE="misrlex"
+
+GENERATION_BACKEND="OPENAI"
+EMBEDDING_BACKEND="JINAAI" # Changed from COHERE
+
+OPENAI_API_KEY=""
+OPENAI_API_URL=
+COHERE_API_KEY=""
+JINAAI_API_KEY="" # Added for JinaAI (can be empty if not needed for local model)
+
+GENERATION_MODEL_ID="gpt-3.5-turbo-0125"
+EMBEDDING_MODEL_ID="jinaai/jina-embeddings-v3" # Changed model ID
+EMBEDDING_MODEL_SIZE=1024 # Changed model size
+
+INPUT_DAFAULT_MAX_CHARACTERS=1024
+GENERATION_DAFAULT_MAX_TOKENS=200
+GENERATION_DAFAULT_TEMPERATURE=0.1
+
+
+VECTOR_DB_BACKEND="PGVECTOR"
+VECTOR_DB_PATH="qdrant_db"
+VECTOR_DB_DISTANCE_METHOD="cosine"
+
+
+PRIMARY_LANG = "en"
+DEFAULT_LANG = "en"
