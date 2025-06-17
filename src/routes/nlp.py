@@ -170,18 +170,19 @@ async def answer_rag(request: Request, project_id: int, search_request: SearchRe
         project_model = await ProjectModel.create_instance(
             db_client=request.app.db_client
         )
-
         project = await project_model.get_project_or_create_one(
             project_id=project_id
         )
-
+        # Use the requested language or fallback to default
+        language = search_request.language or request.app.template_parser.default_language
+        # Create a new TemplateParser for this request
+        template_parser = type(request.app.template_parser)(language=language, default_language=request.app.template_parser.default_language)
         nlp_controller = NLPController(
             vectordb_client=request.app.vectordb_client,
             generation_client=request.app.generation_client,
             embedding_client=request.app.embedding_client,
-            template_parser=request.app.template_parser,
+            template_parser=template_parser,
         )
-
         answer, full_prompt, chat_history = await nlp_controller.answer_rag_question(
             project=project,
             query=search_request.text,
