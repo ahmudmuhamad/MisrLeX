@@ -20,3 +20,10 @@ psycopg2==2.9.10
 huggingface_hub==0.31.1
 nltk==3.9.1
 tqdm==4.67.1
+prometheus-client==0.22.1
+starlette_exporter==0.23.0
+fastapi-health==0.4.0
+davia==0.1.13
+uv==0.7.13
+streamlit==1.35.0
+
