@@ -13,7 +13,7 @@ MisrLeX is a Retrieval-Augmented Generation (RAG) platform designed for legal do
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Development & Contribution](#development--contribution)
-- [License](#license)
+
 
 ---
 
