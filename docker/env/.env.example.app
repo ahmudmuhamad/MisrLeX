@@ -2,7 +2,7 @@ APP_NAME = "MisrLeX"
 APP_VERSION = "0.1"
 
 FILE_EXTENSION_TYPE=["application/pdf", "text/plain", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword"]
-MAX_FILE_SIZE = 10
+MAX_FILE_SIZE = 100
 
 
 # MONGODB

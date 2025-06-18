@@ -65,12 +65,14 @@ services:
       - '--web.enable-lifecycle'
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana-enterprise
     container_name: grafana
     ports:
       - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+    env_file:
+      - ./env/.env.grafana
     networks:
       - backend
     restart: always
@@ -155,5 +157,7 @@ volumes:
   fastapi_data:
     driver: local
   prometheus_data:
+    driver: local
   grafana_data:
     driver: local
+
